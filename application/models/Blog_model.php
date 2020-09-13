@@ -9,33 +9,24 @@ class Blog_model extends CI_Model
 		$this->db->insert('registration', $credentials);
 	}
 
-	public function login($credentials)
+	public function login($user, $password)
 	{
-		$sql = "SELECT * FROM people WHERE password = ? AND (username = ? OR email = ?)";
-        $query = $this->db->query($sql, $credentials);
+		$result = $this->db->select('*')
+				->where('password', $password)
+				->where("(username = '$user' OR email = '$user')")
+				->get('people')
+				->row_array();
 
-		if($query->num_rows() == 1)
+		if(!empty($result))
 		{
-			foreach($query->result() as $row)
-			{
-				$this->db->where('userid',$row->userid)->update('registration', array('status'=>'1'));
-				return array(
-					$row->fname,
-					$row->userid,
-					$row->username,
-					$row->email,
-                    $row->avatar
-                );
-			}
+			$this->db->where('userid', $result['userid'])->update('people', array('status'=>'1'));
 		}
-		else
-		{
-			return NULL;
-		}
+
+		return $result;
 	}
 
 	public function logout()
 	{
-		@$this->db->where('userid',$_SESSION['userid'])->update('registration',array('status'=>'0'));
+		$this->db->where('userid', $_SESSION['userid'])->update('people',array('status'=>'0'));
 	}
 }

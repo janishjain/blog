@@ -1,8 +1,11 @@
+html {
+	height: 100%;
+}
 
 body {
+	height: 100%;
   background: #00FFFF;
-  background: linear-gradient(to right, #90FFFF, #551A8F);
-  padding-top:60px;
+	background: linear-gradient(to right, #90FFFF, #551A8F);
 }
 
 body #notes::-webkit-scrollbar-track
@@ -34,6 +37,57 @@ body #notes::-moz-scrollbar-thumb
 {
   display: none;
 }
+
+.sidebar{
+	height: auto;
+  width: auto;
+  color: #37412a;
+  background-color: white;
+  font-family: "Arial Black", Gadget, sans-serif;
+  font-size: 20px;
+  vertical-align: center;
+}
+
+.leftbar{
+	position: relative;
+	width: 20%;
+	background-color: white;
+	border-radius:7px;
+	box-shadow: 0 8px 6px -6px black;
+	opacity: 0.92;
+	overflow: hidden;
+	display: block;
+}
+
+.feed-wrapper {
+	flex: 1;
+	overflow: auto;
+	background-color: white;
+	border-radius:7px;
+	box-shadow: 0 8px 6px -6px black;
+	opacity: 0.92;
+}
+
+.feed-header {
+	top: 0;
+	font-size: 20px;
+	font-family: "Arial Black", Gadget, sans-serif;
+}
+
+/* // Extra small devices (portrait phones, less than 576px)
+// No media query for `xs` since this is the default in Bootstrap */
+
+/* // Small devices (landscape phones, 576px and up) */
+/* @media (min-width: 576px) {} */
+
+/* // Medium devices (tablets, 768px and up) */
+/* @media (min-width: 768px) {} */
+
+/* // Large devices (desktops, 992px and up) */
+/* @media (min-width: 992px) {} */
+
+/* // Extra large devices (large desktops, 1200px and up) */
+/* @media (min-width: 1200px) {} */
 
 .avatar{
   margin-right: 5px;
@@ -75,6 +129,7 @@ body #notes::-moz-scrollbar-thumb
 .commentarea::-webkit-scrollbar-thumb
 {
   border-radius: 10px;
+  box-shadow: inset 0 0 6px rgba(0,0,0,.3);
   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
   background-color: #d3d3d3;
 }
@@ -197,8 +252,9 @@ background-color: #d3d3d3;
   transition: margin-right .5s;
 }
 
-#wrapper {
-	padding : 100px;
+.wrapper {
+	padding: 0.4% 0.4% 1% 1%;
+	height: 95%
 }
 
 @media screen and (max-height: 450px) {
