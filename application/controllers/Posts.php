@@ -65,4 +65,26 @@ class Posts extends CI_Controller
 		$result = $this->posts->add_dislike($pid, $by);
 		echo json_encode($result);
 	}
+
+	public function edit()
+	{
+		$pid = $this->input->post('id');
+		$title = $this->input->post('title');
+		$content = $this->input->post('content');
+		$result = $this->posts->edit($pid, $title, $content);
+		echo json_encode($result);
+	}
+
+	public function delete()
+	{
+		$pid = $this->input->post('pid');
+		$result = $this->posts->delete($pid);
+
+		if ($result)
+		{
+			redirect('dashboard/');
+		}
+
+		redirect('posts/'.$pid);
+	}
 }

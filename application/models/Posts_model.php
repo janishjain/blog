@@ -203,4 +203,37 @@ class Posts_model extends CI_Model
 		
 		return $this->db->select('dislikes')->where('postid', $pid)->get('posts')->row_array();
 	}
+
+	public function edit($pid, $title, $content)
+	{
+		$this->db->set('title', $title);
+		$this->db->set('content', $content);
+		$this->db->where('postid', $pid);
+		$this->db->update('posts');
+
+		if ($this->db->affected_rows() > 0)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	public function delete($pid)
+	{
+		if (!$_SESSION['is_admin'])
+		{
+			$this->db->where('userid', $_SESSION['userid']);
+		}
+
+		$this->db->where('postid', $pid);
+		$this->db->delete('posts');
+
+		if ($this->db->affected_rows() > 0)
+		{
+			return true;
+		}
+
+		return false;
+	}
 }

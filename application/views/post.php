@@ -23,8 +23,8 @@
 			</div>
 			<div class="btn-group btn-group-lg mb-4 ml-2" role="group" aria-label="Basic example" style="float:right">
 				<?php if ($post['userid'] == $_SESSION['userid'] || $_SESSION['userid'] == 1) {?>
-					<button type="button" class="btn btn-success" title="Edit"><i class="fas fa-pen-square"></i></button>
-					<button type="button" class="btn btn-warning" title="Delete"><i class="fas fa-trash-alt"></i></button>
+					<button type="button" class="btn btn-success" title="Edit" data-toggle="modal" data-target="#editpost"><i class="fas fa-pen-square"></i></button>
+					<button type="button" class="btn btn-warning" title="Delete" data-toggle="modal" data-target="#deletepost"><i class="fas fa-trash-alt"></i></button>
 				<?php } ?>
 				<button type="button" class="btn btn-secondary" title="Report"><i class="fas fa-flag"></i></button>
 			</div>
@@ -59,17 +59,47 @@
 				<form>
 				<div class="form-group">
 					<label for="title" class="col-form-label">Title</label>
-					<input type="text" class="form-control" id="title">
+					<input type="text" class="form-control" id="edit-title">
 				</div>
 				<div class="form-group">
 					<label for="content" class="col-form-label">Content</label>
-					<textarea class="form-control" id="content"></textarea>
+					<textarea class="form-control" id="edit-content"></textarea>
 				</div>
 				</form>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 				<button type="button" id="post" onclick="post()" class="btn btn-primary">Post</button>
+			</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- MODAL EDIT POST -->
+	<div class="modal fade" id="editpost" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Edit Post</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form>
+				<div class="form-group">
+					<label for="title" class="col-form-label">Title</label>
+					<input type="text" class="form-control" id="edittitle" value="<?php echo $post['title'];?>">
+				</div>
+				<div class="form-group">
+					<label for="content" class="col-form-label">Content</label>
+					<textarea class="form-control" id="editcontent"><?php echo $post['content'];?></textarea>
+				</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+				<button type="button" id="edit" class="btn btn-primary">Edit</button>
 			</div>
 			</div>
 		</div>
@@ -98,6 +128,30 @@
 			</div>
 			</div>
 		</div>
+	</div>
+
+	<!-- MODAL DELETE -->
+	<div class="modal fade" id="deletepost" tabindex="-1"  aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+		<div class="modal-header">
+			<h5 class="modal-title">Delete</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body">
+			<p>Are you sure you want to delete this post?</p>
+		</div>
+		<div class="modal-footer">
+			<form action="<?php echo site_url('posts/delete');?>" method="post">
+			<input type="hidden" name="pid" id ="pid" value="<?php echo $post['postid'];?>">
+			<button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+			<button type="submit" class="btn btn-danger">Delete</button>
+			</form>
+		</div>
+		</div>
+	</div>
 	</div>
 </div>
 
@@ -169,6 +223,30 @@ $(document).ready(function(){
 				{
 					$("#comment_modal").modal("hide");
 					$("#comments-container").append("<div class='jumbotron jumbotron-fluid py-2 mb-1' style='border-radius:15px'><div class='container'><h5><b>"+username+"</b></h5><p class='pb-0'>"+comment+"</p><i><font size='-1'>"+time+"</font></i></div></div>");
+				}
+			}
+		});
+	});
+
+	$('#edit').click(function(e)
+	{
+		e.preventDefault();
+		var pid = <?php echo $post['postid']?>;
+		var title = $('#edittitle').val();
+		var content = $('#editcontent').val();
+		$.ajax({
+			url:'<?php echo base_url('posts/edit')?>',
+			type:'POST',
+			data:{id:pid,
+			title: title,
+			content:content},
+			dataType:'JSON',
+			success:function(result)
+			{
+				if(result)
+				{
+					$("#editpost").modal("hide");
+					location.reload();
 				}
 			}
 		});
