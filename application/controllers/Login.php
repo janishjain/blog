@@ -25,7 +25,8 @@ class Login extends CI_Controller
 				'userid' => $_COOKIE['userid'],
 				'username' => $_COOKIE['username'],
 				'email' => $_COOKIE['email'],	
-				'avatar' => $_COOKIE['avatar']
+				'avatar' => $_COOKIE['avatar'],
+				'admin' => $result['is_admin']
 			);
 			$this->session->set_userdata($userdata);
 			redirect('dashboard/');
@@ -46,12 +47,14 @@ class Login extends CI_Controller
 					set_cookie('username', $result['username'], 86400);
 					set_cookie('email', $result['email'], 86400);
 					set_cookie('avatar', $result['avatar'], 86400);
+					set_cookie('admin', $result['is_admin'], 86400);
 					$userdata = array(
 					    'name' => $name,
 					    'userid' => $result['userid'],
 					    'username' => $result['username'],
 					    'email' => $result['email'],
-						'avatar' => $result['avatar']
+						'avatar' => $result['avatar'],
+						'admin' => $result['is_admin']
 					);
 					$this->session->set_userdata($userdata);
 					redirect('dashboard/');
@@ -63,7 +66,8 @@ class Login extends CI_Controller
 					    'userid' => $result['userid'],
 					    'username' => $result['username'],
 					    'email' => $result['email'],
-						'avatar' => $result['avatar']
+						'avatar' => $result['avatar'],
+						'admin' => $result['is_admin']
 					);
 					$this->session->set_userdata($userdata);
 					redirect('dashboard/');
@@ -77,7 +81,7 @@ class Login extends CI_Controller
 				}
 				else
 				{
-					redirect('login/index');
+					redirect('/');
 				}
 			}
 		}
@@ -86,5 +90,27 @@ class Login extends CI_Controller
 	public function register()
 	{
 		$this->load->view('register');
+	}
+
+	public function create()
+	{
+		$this->form_validation->set_rules('password', 'Password','trim|min_length[8]');
+		$this->form_validation->set_rules('passconf', 'Password Confirmation','trim|min_length[8]|matches[password]');
+		$credentials=array(
+		                   'fname'=>$this->input->post('fname'),
+		                   'lname'=>$this->input->post('lname'),
+						   'age'=>$this->input->post('age'),
+		                   'email'=>$this->input->post('email'),
+		                   'username'=>$this->input->post('username'),
+		                   'password'=>md5($this->input->post('password')));
+		if ($this->form_validation->run() == FALSE)
+		{
+			$this->load->view('register');
+		}
+		else
+		{
+			$this->blog->create($credentials);
+			redirect('/');
+		}
 	}
 }

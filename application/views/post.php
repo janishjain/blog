@@ -1,77 +1,103 @@
 <div class="wrapper">
 	<div style="display: flex; height:100%">
-		<aside class="leftbar my-2 mr-1 ml-2 p-4">
-			<div class="sidebar settings">
-				<ul class="list-group list-group-flush">
-					<li class="list-group-item"></li>
-				</ul>
-				<a href="<?php echo site_url('dashboard/');?>" style="text-decoration:none;">
-					<ul class="list-group list-group-flush">
-						<li class="list-group-item">Home</li>
-					</ul>
-				</a>
-				<a id="notifications" href="#" style="text-decoration:none;">
-					<ul class="list-group list-group-flush">
-						<li class="list-group-item">Notifications</li>
-					</ul>
-				</a>
-				<a href="<?php echo site_url('logout/');?>" style="text-decoration:none;">
-					<ul class="list-group list-group-flush">
-						<li class="list-group-item">Logout</li>
-					</ul>
-				</a>
-			</div>
-			<div class="sidebar notification" style="display:none;">
-				<a id="back" href="#" style="text-decoration:none;">
-					<ul class="list-group list-group-flush">
-						<li class="list-group-item"><i class="fas fa-long-arrow-alt-left fa-2x"></i></li>
-					</ul>
-				</a>
-			</div>
-		</aside>
+		<?php $this->load->view('sidebar');?>
 		<main class="feed-wrapper my-2 ml-1 mr-2 p-4">
 			<header class="feed-header">
 				<a href = "<?php echo site_url('dashboard/');?>"><i class="fas fa-long-arrow-alt-left fa-2x"></i></a>
 				<font size="+3"> &nbsp Feed </font>
 				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addpost" style="float: right"><i class="far fa-plus-square"></i> Add New Post</button>
 			</header><hr style="color:black;"></hr>
-			<div class="jumbotron py-3">
-			<h4 class="display-8">Hello, world!</h4>
-			<p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-			<hr class="my-3">
-			<a class="btn btn-primary btn-lg btn-block" href="#" role="button">View</a>
+			<div class="jumbotron jumbotron-fluid py-4">
+				<div class="container">
+					<h1 class="display-4"><?php echo $post['title']; ?></h1>
+					<p class="lead"><?php echo $post['content']; ?></p>
+				</div>
+			</div>
+			<div class="btn-group btn-group-lg mb-4" role="group" aria-label="Basic example">
+				<button type="button" class="btn btn-danger" title="Like" id="like" data-postid="<?php echo $post['postid'];?>" >
+					<?= $post['likes']; ?>&nbsp&nbsp<i class="fas fa-heart"></i></button>
+				<button type="button" class="btn btn-dark" title="Dislike" id="dislike" data-postid="<?php echo $post['postid'];?>" >
+					<?= $post['dislikes']; ?>&nbsp&nbsp<i class="fas fa-heart-broken"></i></button>
+				<button type="button" class="btn btn-primary" title="Comment" data-toggle="modal" data-target="#comment_modal">
+					<?= $post['comments']; ?>&nbsp&nbsp<i class="fas fa-comment"></i></button>
+			</div>
+			<div class="btn-group btn-group-lg mb-4 ml-2" role="group" aria-label="Basic example" style="float:right">
+				<?php if ($post['userid'] == $_SESSION['userid'] || $_SESSION['userid'] == 1) {?>
+					<button type="button" class="btn btn-success" title="Edit"><i class="fas fa-pen-square"></i></button>
+					<button type="button" class="btn btn-warning" title="Delete"><i class="fas fa-trash-alt"></i></button>
+				<?php } ?>
+				<button type="button" class="btn btn-secondary" title="Report"><i class="fas fa-flag"></i></button>
+			</div>
+
+			<div id="comments-container">
+			<?php if (!empty($comments)) { ?>
+				<?php foreach ($comments as $comment) { ?>
+					<div class="jumbotron jumbotron-fluid py-2 mb-1" style="border-radius:15px">
+						<div class="container">
+							<h5><b><?php echo trim($comment['name']); ?></b></h5>
+							<p class="pb-0"><?php echo trim($comment['comment']); ?></p>
+							<i><font size="-1"><?php echo trim($comment['add_time']); ?></font></i>
+						</div>
+					</div>
+				<?php }?>
+			<?php }?>
 			</div>
 		</main>
 	</div>
 
 	<!-- MODAL ADD POST -->
 	<div class="modal fade" id="addpost" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-		<div class="modal-header">
-			<h5 class="modal-title" id="exampleModalLabel">Add Post</h5>
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-			</button>
-		</div>
-		<div class="modal-body">
-			<form>
-			<div class="form-group">
-				<label for="title" class="col-form-label">Title</label>
-				<input type="text" class="form-control" id="title">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Add Post</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
-			<div class="form-group">
-				<label for="content" class="col-form-label">Content</label>
-				<textarea class="form-control" id="content"></textarea>
+			<div class="modal-body">
+				<form>
+				<div class="form-group">
+					<label for="title" class="col-form-label">Title</label>
+					<input type="text" class="form-control" id="title">
+				</div>
+				<div class="form-group">
+					<label for="content" class="col-form-label">Content</label>
+					<textarea class="form-control" id="content"></textarea>
+				</div>
+				</form>
 			</div>
-			</form>
-		</div>
-		<div class="modal-footer">
-			<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-			<button type="button" id="post" onclick="post()" class="btn btn-primary">Post</button>
-		</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+				<button type="button" id="post" onclick="post()" class="btn btn-primary">Post</button>
+			</div>
+			</div>
 		</div>
 	</div>
+
+	<!-- MODAL ADD COMMENT -->
+	<div class="modal fade" id="comment_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Add Comment</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form>
+				<div class="form-group">
+					<input type="text" class="form-control" id="comment">
+				</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+				<button type="button" data-postid="<?php echo $post['postid'];?>" id="addcomment" class="btn btn-primary">Comment</button>
+			</div>
+			</div>
+		</div>
 	</div>
 </div>
 
@@ -85,5 +111,67 @@ $(document).ready(function(){
 		$(".settings").css('display', 'block');
 		$(".notification").css('display', 'none');
 		});
+
+	$('#like').click(function(e)
+	{
+		e.preventDefault();
+		var pid = $(this).data("postid");
+		$.ajax({
+			url:'<?php echo base_url('posts/like')?>',
+			type:'POST',
+			data:{postid: pid},
+			dataType:'JSON',
+			success:function(result)
+			{
+				if(result)
+				{
+					$("#like").html(""+result.likes+"&nbsp&nbsp<i class='fas fa-heart'></i>");
+				}
+			}
+		});
 	});
+
+	$('#dislike').click(function(e)
+	{
+		e.preventDefault();
+		var pid = $(this).data("postid");
+		$.ajax({
+			url:'<?php echo base_url('posts/dislike')?>',
+			type:'POST',
+			data:{postid:pid},
+			dataType:'JSON',
+			success:function(result)
+			{console.log(result)
+				if(result)
+				{
+					$("#dislike").html(result.dislikes+"&nbsp&nbsp<i class='fas fa-heart'></i>");
+				}
+			}
+		});
+	});
+	
+	$('#addcomment').click(function(e)
+	{
+		e.preventDefault();
+		var username = '<?php echo $_SESSION['username']?>';
+		var pid = $(this).data("postid");
+		var comment = $('#comment').val();
+		var time = '<?php echo date('Y-m-d H:i:s');?>';
+		$.ajax({
+			url:'<?php echo base_url('posts/comment')?>',
+			type:'POST',
+			data:{comment: comment,
+			postid:pid},
+			dataType:'JSON',
+			success:function(result)
+			{
+				if(result)
+				{
+					$("#comment_modal").modal("hide");
+					$("#comments-container").append("<div class='jumbotron jumbotron-fluid py-2 mb-1' style='border-radius:15px'><div class='container'><h5><b>"+username+"</b></h5><p class='pb-0'>"+comment+"</p><i><font size='-1'>"+time+"</font></i></div></div>");
+				}
+			}
+		});
+	});
+});
 </script>

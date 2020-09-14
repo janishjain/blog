@@ -6,7 +6,14 @@ class Blog_model extends CI_Model
 {
 	public function create($credentials)
 	{
-		$this->db->insert('registration', $credentials);
+		$this->db->insert('people', $credentials);
+
+		if ($this->db->affected_rows() > 0)
+		{
+			return true;
+		}
+
+		return false;
 	}
 
 	public function login($user, $password)

@@ -21,7 +21,7 @@
                         <div class="card-body">
                             <h5 class="card-title text-center">Register</h5>
                             <?php $attr=array('class'=>'form-signin');?>
-                            <?php echo form_open('blog/create_user', $attr);?>
+                            <?php echo form_open('login/create', $attr);?>
                             <div class="form-label-group">
                                 <input type="text" id="fname" name="fname" class="form-control" placeholder="First Name" required autofocus>
                                 <label for="fname">First Name</label>

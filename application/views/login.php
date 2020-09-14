@@ -31,7 +31,7 @@
                             <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Login</button>
                             </form>
                             </br>
-                            <form action="login/register" method="post">
+                            <form action="registration/" method="post">
                             <button class="btn btn-lg btn-warning btn-block text-uppercase" type="submit">Sign Up!</button>
                             </form>
                         </div>

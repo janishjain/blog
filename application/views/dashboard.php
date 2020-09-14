@@ -1,36 +1,6 @@
 <div class="wrapper">
 	<div style="display: flex; height:100%">
-		<aside class="leftbar my-2 mr-1 ml-2 p-4">
-			<div class="sidebar settings">
-				<ul class="list-group list-group-flush">
-					<li class="list-group-item">
-						<img src="<?php echo site_url('/avatar/h.jpg');?>" class="card-img-top rounded" alt="">
-					</li>
-				</ul>
-				<a href="<?php echo site_url('dashboard/');?>" style="text-decoration:none;">
-					<ul class="list-group list-group-flush">
-						<li class="list-group-item">Home</li>
-					</ul>
-				</a>
-				<a id="notifications" href="#" style="text-decoration:none;">
-					<ul class="list-group list-group-flush">
-						<li class="list-group-item">Notifications</li>
-					</ul>
-				</a>
-				<a href="<?php echo site_url('logout/');?>" style="text-decoration:none;">
-					<ul class="list-group list-group-flush">
-						<li class="list-group-item">Logout</li>
-					</ul>
-				</a>
-			</div>
-			<div class="sidebar notification" style="display:none;">
-				<a id="back" href="#" style="text-decoration:none;">
-					<ul class="list-group list-group-flush">
-						<li class="list-group-item"><i class="fas fa-long-arrow-alt-left fa-2x"></i></li>
-					</ul>
-				</a>
-			</div>
-		</aside>
+		<?php $this->load->view('sidebar');?>
 		<main class="feed-wrapper my-2 ml-1 mr-2 p-4">
 			<header class="feed-header"><font size="+3">Feed</font>
 				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#post_modal" style="float: right"><i class="far fa-plus-square"></i> Add New Post</button>
@@ -46,13 +16,26 @@
 			<!-- alerts -->
 
 			<!-- POST -->
+			<?php if (!empty($posts)){?>
 			<?php foreach ($posts as $value) {?>
 				<div class="jumbotron py-3">
 				<h4 class="display-8"><?php echo $value['title'];?></h4>
 				<p class="lead" style="width: inherit; white-space: nowrap; overflow: hidden;text-overflow: ellipsis;"><?php echo $value['content'];?></p>
 				<hr class="my-3">
-				<a class="btn btn-primary btn-lg btn-block" href="#" role="button">View</a>
+				<a class="btn btn-primary btn-lg" href="<?php echo site_url('posts/'.$value['postid']);?>" role="button">View</a>
+				<div class="btn-group btn-group-lg mb-4" role="group" aria-label="Basic example" style="float:right">
+					<button type="button" class="btn btn-danger" data-tooltip="tooltip" data-placement="top" title="Like">
+						<?php echo $value['likes']; ?>&nbsp&nbsp<i class="fas fa-heart"></i>
+					</button>
+					<button type="button" class="btn btn-dark" data-tooltip="tooltip" data-placement="top" title="Dislike">
+						<?php echo $value['dislikes']; ?>&nbsp&nbsp<i class="fas fa-heart-broken"></i>
+					</button>
+					<button type="button" class="btn btn-primary" data-tooltip="tooltip" data-placement="top" title="Comment">
+						<?php echo $value['comments']; ?>&nbsp&nbsp<i class="fas fa-comment"></i>
+					</button>
 				</div>
+				</div>
+			<?php } ?>
 			<?php } ?>
 		</main>
 	</div>
@@ -101,6 +84,10 @@ $(document).ready(function(){
 		$(".settings").css('display', 'block');
 		$(".notification").css('display', 'none');
 	});
+
+	$(function () {
+		$('[data-tooltip="tooltip"]').tooltip()
+		});
 
 	$('#addpost').click(function(e)
 	{
