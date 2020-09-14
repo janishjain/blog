@@ -22,16 +22,21 @@ class Posts_model extends CI_Model
 		return false;
 	}
 
-	public function get_all_posts()
+	public function get_all_posts($keyword = '')
 	{
 		$following = $this->get_following();
 		$following = array_unique(array_merge($following, [$_SESSION['userid']]));
 
-		return  $this->db->select('postid, title, content, likes, dislikes, comments')
-				->where_in('userid', $following)
-				->order_by('add_time', 'DESC')
-				->get('posts')
-				->result_array();
+		$this->db->select('postid, title, content, likes, dislikes, comments');
+		$this->db->where_in('userid', $following);
+
+		if (!empty($keyword))
+		{
+			$this->db->where("(title LIKE '%$keyword%' OR content LIKE '%$keyword%')");
+		}
+
+		$this->db->order_by('add_time', 'DESC');
+		return $this->db->get('posts')->result_array();
 	}
 
 	public function get_following()

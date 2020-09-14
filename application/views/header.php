@@ -12,8 +12,8 @@
     <body id="main">
 		<nav class="navbar navbar-light bg-light justify-content-between">
 		<a class="navbar-brand" href="#" style="color: #0094FA;text-decoration: underline; font-size: 30px"><strong>Blog</strong></a>
-		<form class="form-inline">
-			<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+		<form action= "<?php echo site_url('dashboard/');?>" method='POST' class="form-inline">
+			<input class="form-control mr-sm-2" name="keyword" id="keyword" type="search" placeholder="Search" aria-label="Search">
 			<button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
 		</form>
 		</nav>

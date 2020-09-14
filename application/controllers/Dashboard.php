@@ -14,7 +14,8 @@ class Dashboard extends CI_Controller
 
 	public function index()
 	{
-		$data['posts'] = $this->posts->get_all_posts();
+		$keyword = !empty($this->input->post('keyword')) ? $this->input->post('keyword') : '';
+		$data['posts'] = $this->posts->get_all_posts($keyword);
 		$this->load->view('header');
 		$this->load->view('dashboard', $data);
 		$this->load->view('footer');
