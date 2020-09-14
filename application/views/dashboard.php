@@ -20,6 +20,7 @@
 			<?php if (!empty($posts)){?>
 			<?php foreach ($posts as $value) {?>
 				<div class="jumbotron py-3">
+				<b><p> <?php echo $value['username'];?></p><b>
 				<h4 class="display-8"><?php echo $value['title'];?></h4>
 				<p class="lead" style="width: inherit; white-space: nowrap; overflow: hidden;text-overflow: ellipsis;"><?php echo $value['content'];?></p>
 				<hr class="my-3">

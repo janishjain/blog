@@ -31,7 +31,7 @@ $(document).ready(function(){
 				var html = "";
 				$.each(result, function(k, v)
 				{
-					html += "<div class='jumbotron py-3'><h4 class='display-8'>";
+					html += "<div class='jumbotron py-3'><b><p> "+v.username+"</p><b><h4 class='display-8'>";
 					html += v.title+"</h4><p class='lead' style='width: inherit; white-space: nowrap; overflow: hidden;text-overflow: ellipsis;'>";
 					html += v.content+"</p><hr class='my-3'><a class='btn btn-primary btn-lg' ";
 					html += "href='"+base_url+v.postid+"' role='button'>View</a>";

@@ -22,6 +22,18 @@ class Posts_model extends CI_Model
 		return false;
 	}
 
+	public function get_username($userid)
+	{
+		$result = $this->db->select('username')->where('userid', $userid)->get('people')->row_array();
+
+		if (!empty($result))
+		{
+			return $result['username'];
+		}
+
+		return 'unknown';
+	}
+
 	public function get_posts_count($keyword = '')
 	{
 		$following = $this->get_following();
@@ -48,15 +60,16 @@ class Posts_model extends CI_Model
 		$following = $this->get_following();
 		$following = array_unique(array_merge($following, [$_SESSION['userid']]));
 
-		$this->db->select('postid, title, content, likes, dislikes, comments');
-		$this->db->where_in('userid', $following);
+		$this->db->select('posts.userid, posts.postid, posts.title, posts.content, posts.likes, posts.dislikes, posts.comments, people.username');
+		$this->db->where_in('posts.userid', $following);
 
 		if (!empty($keyword))
 		{
-			$this->db->where("(title LIKE '%$keyword%' OR content LIKE '%$keyword%')");
+			$this->db->where("(posts.title LIKE '%$keyword%' OR posts.content LIKE '%$keyword%')");
 		}
 
-		$this->db->order_by('add_time', 'DESC');
+		$this->db->join('people', 'posts.userid = people.userid', 'left');
+		$this->db->order_by('posts.add_time', 'DESC');
 		$this->db->limit($limit, $offset);
 		return $this->db->get('posts')->result_array();
 	}
