@@ -22,7 +22,28 @@ class Posts_model extends CI_Model
 		return false;
 	}
 
-	public function get_all_posts($keyword = '')
+	public function get_posts_count($keyword = '')
+	{
+		$following = $this->get_following();
+		$following = array_unique(array_merge($following, [$_SESSION['userid']]));
+
+		$this->db->select('COUNT(postid) as count');
+		$this->db->where_in('userid', $following);
+
+		if (!empty($keyword))
+		{
+			$this->db->where("(title LIKE '%$keyword%' OR content LIKE '%$keyword%')");
+		}
+
+		$this->db->order_by('add_time', 'DESC');
+		$result = $this->db->get('posts')->row_array();
+		$count = 0;
+		if ($result['count']) $count = $result['count'];
+
+		return $count;
+	}
+
+	public function get_all_posts($keyword = '', $limit, $offset)
 	{
 		$following = $this->get_following();
 		$following = array_unique(array_merge($following, [$_SESSION['userid']]));
@@ -36,6 +57,7 @@ class Posts_model extends CI_Model
 		}
 
 		$this->db->order_by('add_time', 'DESC');
+		$this->db->limit($limit, $offset);
 		return $this->db->get('posts')->result_array();
 	}
 

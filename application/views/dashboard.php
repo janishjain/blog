@@ -16,6 +16,7 @@
 			<!-- alerts -->
 
 			<!-- POST -->
+			<div class="feed-card">
 			<?php if (!empty($posts)){?>
 			<?php foreach ($posts as $value) {?>
 				<div class="jumbotron py-3">
@@ -24,19 +25,21 @@
 				<hr class="my-3">
 				<a class="btn btn-primary btn-lg" href="<?php echo site_url('posts/'.$value['postid']);?>" role="button">View</a>
 				<div class="btn-group btn-group-lg mb-4" role="group" aria-label="Basic example" style="float:right">
-					<button type="button" class="btn btn-danger" data-tooltip="tooltip" data-placement="top" title="Like">
+					<div class="btn btn-danger">
 						<?php echo $value['likes']; ?>&nbsp&nbsp<i class="fas fa-heart"></i>
-					</button>
-					<button type="button" class="btn btn-dark" data-tooltip="tooltip" data-placement="top" title="Dislike">
+					</div>
+					<div class="btn btn-dark">
 						<?php echo $value['dislikes']; ?>&nbsp&nbsp<i class="fas fa-heart-broken"></i>
-					</button>
-					<button type="button" class="btn btn-primary" data-tooltip="tooltip" data-placement="top" title="Comment">
+					</div>
+					<div class="btn btn-primary">
 						<?php echo $value['comments']; ?>&nbsp&nbsp<i class="fas fa-comment"></i>
-					</button>
+					</div>
 				</div>
 				</div>
 			<?php } ?>
 			<?php } ?>
+			</div>
+			<?php $this->load->view('pagination', $pagination);?>
 		</main>
 	</div>
 
@@ -71,7 +74,7 @@
 	</div>
 </div>
 
-<script>
+<script type="text/javascript">
 $(document).ready(function(){
 	$("#notifications").click(function()
 	{
@@ -117,6 +120,4 @@ $(document).ready(function(){
 		});
 	});
 });
-
-	
 </script>
