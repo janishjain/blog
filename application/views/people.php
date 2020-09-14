@@ -24,8 +24,7 @@
                         </div>
                     </div>
                 </div>
-				</main>
-	</div>
+				
 
 <script type="text/javascript">
 $(document).ready(function() {
@@ -53,5 +52,7 @@ $(document).ready(function() {
 
 </script>
 <?php }?>
+</main>
+</div>
 </div>
 </body>
