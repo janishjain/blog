@@ -6,6 +6,7 @@ class People extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
+		is_login();
 		$this->load->model('people_model', 'people');
 	}
 

@@ -37,8 +37,8 @@ $(document).ready(function(){
 					html += "href='"+base_url+v.postid+"' role='button'>View</a>";
 					html += "<div class='btn-group btn-group-lg mb-4' role='group' aria-label='Basic example' style='float:right'>";
 					html += "<div class='btn btn-danger'>"+v.likes+"&nbsp&nbsp<i class='fas fa-heart'></i></div>";
-					html += "<div class='btn btn-dark'>"+v.likes+"&nbsp&nbsp<i class='fas fa-heart'></i></div>";
-					html += "<div class='btn btn-primary'>"+v.likes+"&nbsp&nbsp<i class='fas fa-heart'></i></div>";
+					html += "<div class='btn btn-dark'>"+v.dislikes+"&nbsp&nbsp<i class='fas fa-heart-broken'></i></div>";
+					html += "<div class='btn btn-primary'>"+v.comments+"&nbsp&nbsp<i class='fas fa-comment'></i></div>";
 					html += "</div></div>";
 				})
 
